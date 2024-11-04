@@ -32,7 +32,7 @@ export default function Avatar() {
         // Validate image file type
         setSelectedFile(file);
         setPreview(URL.createObjectURL(file));
-        setError(""); 
+        setError("");
       } else {
         setError("Please select a valid image file.");
       }
@@ -43,7 +43,7 @@ export default function Avatar() {
     if (!selectedFile) return;
 
     setUploading(true);
-    setError(""); 
+    setError("");
 
     const formData = new FormData();
     formData.append("profilePicture", selectedFile);
@@ -95,21 +95,21 @@ export default function Avatar() {
           Please select a profile picture
         </p>
 
-        <div className="flex items-center">
+        <div className="flex flex-col md:flex-row items-center md:space-x-4">
           {preview ? (
             <img
               src={preview}
               alt="Profile Preview"
-              className="w-40 h-40 rounded-full mr-4 object-cover"
+              className="w-40 h-40 rounded-full mb-4 md:mb-0 object-cover"
             />
           ) : uploadedUrl ? (
             <img
               src={`http://localhost:5000${uploadedUrl}`}
               alt="Profile Picture"
-              className="w-40 h-40 rounded-full mr-4 object-cover"
+              className="w-40 h-40 rounded-full mb-4 md:mb-0 object-cover"
             />
           ) : (
-            <div className="w-40 h-40 border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-500 mr-4">
+            <div className="w-40 h-40 border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-500 mb-4 md:mb-0">
               No Image
             </div>
           )}

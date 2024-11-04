@@ -54,7 +54,7 @@ export default function Login() {
 
   return (
     <div
-      className="min-h-screen flex flex-col justify-center items-center bg-black backdrop-blur-sm p-5"
+      className="min-h-screen flex flex-col justify-center items-center bg-black p-5"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
@@ -77,7 +77,6 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        {/* Password Input */}
         <div className="w-full relative">
           <input
             className="w-full h-12 bg-gray-700 text-white px-4 rounded-lg border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-300"
