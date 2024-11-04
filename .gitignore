@@ -14,7 +14,7 @@
 **/dist-ssr/
 
 # Upload directory
-**/upload/
+**/uploads/
 
 # Logs
 **/logs/
