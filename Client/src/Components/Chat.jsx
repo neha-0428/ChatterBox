@@ -7,8 +7,8 @@ import { FaBars } from "react-icons/fa";
 export default function Chat() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [loggedInUsername, setLoggedInUsername] = useState("");
-  const [isSideChatsVisible, setIsSideChatsVisible] = useState(false); // State to control SideChats visibility
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to track window width
+  const [isSideChatsVisible, setIsSideChatsVisible] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -19,7 +19,7 @@ export default function Chat() {
     // Update window width on resize
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-      // Adjust the side chats visibility based on window width
+
       if (window.innerWidth >= 1050) {
         setIsSideChatsVisible(true); // Show on larger screens
       } else {
@@ -28,7 +28,7 @@ export default function Chat() {
     };
 
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initial check
+    handleResize(); 
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -38,7 +38,8 @@ export default function Chat() {
   };
 
   const toggleSideChats = () => {
-    setIsSideChatsVisible((prev) => !prev); // Toggle side chat visibility
+    // Toggle side chat visibility
+    setIsSideChatsVisible((prev) => !prev);
   };
 
   return (
@@ -58,8 +59,24 @@ export default function Chat() {
         {selectedUser ? (
           <ChatWindow selectedUser={selectedUser} />
         ) : (
-          <div className="flex items-center justify-center h-full text-white text-2xl bg-[#000000]/90">
-            Please select a user to chat
+          <div className="flex items-center justify-center h-full text-center bg-[#000000]/90  text-gray-200">
+            <div className="max-w-md p-6 bg-gray-800 rounded-lg shadow-lg">
+              <h1 className="text-2xl font-bold mb-4">
+                👋 Welcome to Your Chat!
+              </h1>
+              <p className="text-gray-400 mb-6">
+                Start a conversation by selecting or adding a user from the left
+                panel.
+              </p>
+              <ul className="text-sm text-gray-300 space-y-2">
+                <li>
+                  ➤ Click the <span className="text-green-400">+</span> button
+                  to add a new chat
+                </li>
+                <li>➤ Use the search bar to find existing contacts</li>
+                <li>➤ Tap a user to start chatting instantly</li>
+              </ul>
+            </div>
           </div>
         )}
       </div>
@@ -72,8 +89,7 @@ export default function Chat() {
         >
           <span className="material-icons">
             <FaBars />
-            </span>{" "}
-          {/* Use Material Icons or your preferred icon library */}
+          </span>{" "}
         </button>
       )}
 

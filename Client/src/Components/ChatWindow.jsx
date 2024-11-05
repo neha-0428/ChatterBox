@@ -186,7 +186,7 @@ export default function ChatWindow({ selectedUser }) {
         ))}
       </div>
 
-      {/* Input field and Send button aligned */}
+      {/* Input field and Send button */}
       <div className="mt-2 flex items-center">
         <input
           type="text"
