@@ -1,0 +1,14 @@
+/* Hide sidechats and make ChatWindow full width for screens below 1050px */
+@media (max-width: 1050px) {
+  .sidechats {
+    display: none;
+  }
+  .chatWindow {
+    width: 100%;
+  }
+}
+
+
+.fixed-sidechats {
+  width: 342px;
+}
