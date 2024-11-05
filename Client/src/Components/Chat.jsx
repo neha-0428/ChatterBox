@@ -9,7 +9,6 @@ export default function Chat() {
 
   useEffect(() => {
     const username = localStorage.getItem("username");
-    console.log(username);
     if (username) {
       setLoggedInUsername(username);
     }
@@ -21,17 +20,20 @@ export default function Chat() {
 
   return (
     <div className="flex h-screen">
-      <SideChats
-        loggedInUsername={loggedInUsername}
-        onSelectUser={handleSelectUser}
-      />
-      <div className="flex-1">
+      {/* SideChats takes 25% of the screen on larger screens and hides on smaller screens */}
+      <div className="hidden md:block md:w-1/4">
+        <SideChats
+          loggedInUsername={loggedInUsername}
+          onSelectUser={handleSelectUser}
+        />
+      </div>
+
+      {/* ChatWindow takes 75% of the screen on larger screens, full width on smaller screens */}
+      <div className="w-full md:w-3/4">
         {selectedUser ? (
           <ChatWindow selectedUser={selectedUser} />
         ) : (
-          <div
-            className="flex items-center justify-center h-full text-white text-2xl bg-[#000000]/90"
-          >
+          <div className="flex items-center justify-center h-full text-white text-2xl bg-[#000000]/90">
             Please select a user to chat
           </div>
         )}

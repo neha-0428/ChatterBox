@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import socket from "../socket";
+import bgImage from "../assets/bg6.jpg";
 
 export default function ChatWindow({ selectedUser }) {
   const [messages, setMessages] = useState([]);
@@ -136,9 +137,14 @@ export default function ChatWindow({ selectedUser }) {
       className={`w-full h-screen ${
         selectedUser ? "bg-gray-950" : "bg-red-800"
       } p-5 flex flex-col`}
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       {/* User's profile and name */}
-      <div className="flex items-center space-x-4 mb-4">
+      <div className="flex items-center space-x-4 mb-2">
         {selectedUserPic ? (
           <img
             src={`http://localhost:5000${selectedUserPic}`}
@@ -155,7 +161,7 @@ export default function ChatWindow({ selectedUser }) {
       {/* Chat messages */}
       <div
         ref={chatWindowRef}
-        className="flex-grow overflow-y-auto bg-gray-800 p-4 rounded-lg"
+        className="flex-grow overflow-y-auto bg-[#000000]/70 p-2 rounded-lg"
       >
         {messages.map((message, index) => (
           <div
@@ -181,7 +187,7 @@ export default function ChatWindow({ selectedUser }) {
       </div>
 
       {/* Input field and Send button aligned */}
-      <div className="mt-4 flex items-center">
+      <div className="mt-2 flex items-center">
         <input
           type="text"
           className="flex-grow p-3 rounded-lg bg-gray-800 text-white border border-gray-600"

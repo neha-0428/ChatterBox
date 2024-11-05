@@ -169,7 +169,7 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
     <div className="flex">
       {/* Side Menu for larger screens */}
       <div
-        className={`hidden lg:flex fixed inset-y-0 left-0 bg-gray-900 text-white lg:w-64 w-1/4 p-5`}
+        className={`hidden lg:flex flex-col fixed inset-y-0 left-0 bg-gray-900 text-white lg:w-1/4 w-1/4 p-5`}
       >
         {/* Header section for profile and logout */}
         <div className="flex items-center justify-between mb-4">
@@ -214,9 +214,9 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
         )}
 
         {showDialog && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="fixed inset-0 text-black bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-5 rounded-lg shadow-lg">
-              <h3 className="mb-4 text-lg font-semibold">Add New Chat</h3>
+              <h3 className="mb-4 text-lg text-black text-center font-semibold">Add New Chat</h3>
               <input
                 type="text"
                 className="w-full p-3 rounded-lg mb-2 border-2 border-gray-300 focus:outline-none focus:border-blue-500"
@@ -327,7 +327,7 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
         )}
 
         {showDialog && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="fixed inset-0 text-black bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-5 rounded-lg shadow-lg">
               <h3 className="mb-4 text-lg font-semibold">Add New Chat</h3>
               <input
