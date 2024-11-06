@@ -6,7 +6,7 @@ import UserRoutes from "./Routes/UserRoutes.js";
 import chatRoutes from "./Routes/chatRoutes.js";
 import { Server as SocketIO } from "socket.io";
 import http from "http";
-import Chat from "./Model/Chat.js"; // Assuming Chat is your chat model
+import Chat from "./Model/Chat.js";
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new SocketIO(server, {
   cors: {
-    origin: "http://localhost:5173", // Your frontend URL
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
@@ -27,7 +27,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your frontend URL
+    origin: "http://localhost:5173", 
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
@@ -56,7 +56,6 @@ io.on("connection", (socket) => {
 
       // Emit to both sender and receiver rooms
       io.to(receiver).emit("receiveMessage", { sender, text, timestamp });
-      // io.to(sender).emit("receiveMessage", { sender, text, timestamp });
 
       console.log(`Message sent from ${sender} to ${receiver}`);
       console.log(`Emitting message to ${receiver} and ${sender}`);
