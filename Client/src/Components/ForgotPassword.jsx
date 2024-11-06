@@ -62,7 +62,7 @@ export default function ForgotPassword() {
         { email, password: newPassword, securityAnswer }
       );
       toast.success(response.data.message, toastOptions);
-      navigate("/avatar");
+      navigate("/login");
     } catch (error) {
       toast.error(
         error.response?.data?.error || "Reset password failed",

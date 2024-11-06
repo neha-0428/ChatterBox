@@ -16,18 +16,20 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new SocketIO(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
 });
+
+console.log("MongoURL " , process.env.MONGO_URL);
 
 // Connect to MongoDB
 connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
