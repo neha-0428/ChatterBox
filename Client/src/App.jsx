@@ -6,6 +6,7 @@ import Avatar from "./Components/Avatar";
 import Chat from "./Components/Chat";
 import ForgotPassword from "./Components/ForgotPassword";
 
+
 function App() {
   return (
     <div>

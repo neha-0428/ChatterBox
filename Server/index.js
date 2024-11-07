@@ -1,4 +1,3 @@
-// index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -7,6 +6,7 @@ import UserRoutes from "./Routes/UserRoutes.js";
 import chatRoutes from "./Routes/chatRoutes.js";
 import { Server as SocketIO } from "socket.io";
 import http from "http";
+import path from "path";
 import Chat from "./Model/Chat.js";
 
 dotenv.config();
@@ -39,6 +39,16 @@ app.use("/uploads", express.static("uploads"));
 
 // Connect to MongoDB
 connectDB();
+
+// Serve static files from React build folder
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "frontend", "build")));
+
+  // Catch-all route to serve index.html for any route not defined in the API
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+  });
+}
 
 // Configure Socket.IO with CORS options
 const io = new SocketIO(server, {
