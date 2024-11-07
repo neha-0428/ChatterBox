@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import logo from "../assets/logo.png";
 import bgImage from "../assets/bg.png";
+import { BASE_URL } from "../socket";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${BASE_URL}/api/users/login`,
         { email, password }
       );
 

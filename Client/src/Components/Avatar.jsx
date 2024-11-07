@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/bg.png";
+import { BASE_URL } from "../socket";
 
 export default function Avatar() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -51,7 +52,7 @@ export default function Avatar() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/uploadProfilePicture",
+        `${BASE_URL}/api/users/uploadProfilePicture`,
         formData,
         {
           headers: {
@@ -104,7 +105,7 @@ export default function Avatar() {
             />
           ) : uploadedUrl ? (
             <img
-              src={`http://localhost:5000${uploadedUrl}`}
+              src={`${BASE_URL}${uploadedUrl}`}
               alt="Profile Picture"
               className="w-40 h-40 rounded-full mb-4 md:mb-0 object-cover"
             />

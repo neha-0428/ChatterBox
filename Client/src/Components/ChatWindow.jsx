@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import socket from "../socket";
 import bgImage from "../assets/bg6.jpg";
+import { BASE_URL } from "../socket";
 
 export default function ChatWindow({ selectedUser }) {
   const [messages, setMessages] = useState([]);
@@ -54,7 +55,7 @@ export default function ChatWindow({ selectedUser }) {
       if (selectedUser && loggedInUsername) {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/chats/${loggedInUsername}/${selectedUser}`
+            `${BASE_URL}/api/chats/${loggedInUsername}/${selectedUser}`
           );
           const formattedMessages = response.data.map((msg) => ({
             ...msg,
@@ -66,7 +67,7 @@ export default function ChatWindow({ selectedUser }) {
           setMessages(formattedMessages);
 
           const userResponse = await axios.get(
-            `http://localhost:5000/api/users/user/${selectedUser}`
+            `${BASE_URL}/api/users/user/${selectedUser}`
           );
           setSelectedUserPic(userResponse.data.profilePicture);
         } catch (error) {
@@ -147,7 +148,7 @@ export default function ChatWindow({ selectedUser }) {
       <div className="flex items-center space-x-4 mb-2">
         {selectedUserPic ? (
           <img
-            src={`http://localhost:5000${selectedUserPic}`}
+            src={`${BASE_URL}${selectedUserPic}`}
             alt={selectedUser}
             className="w-16 h-16 rounded-full object-cover cursor-pointer hover:scale-105 transition-transform"
             onClick={handleImageClick}
@@ -211,7 +212,7 @@ export default function ChatWindow({ selectedUser }) {
           onClick={closeZoomedPic}
         >
           <img
-            src={`http://localhost:5000${selectedUserPic}`}
+            src={`${BASE_URL}${selectedUserPic}`}
             alt="Zoomed Profile"
             className="w-60 h-60 rounded-full object-cover"
           />

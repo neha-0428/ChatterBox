@@ -5,6 +5,7 @@ import socket from "../socket";
 import { IoMdLogOut } from "react-icons/io";
 import { FaPlus } from "react-icons/fa";
 import "../style.css";
+import { BASE_URL } from "../socket";
 
 export default function SideChats({ loggedInUsername, onSelectUser }) {
   const [users, setUsers] = useState([]);
@@ -27,7 +28,7 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
       }
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/users/user/${loggedInUsername}/chats`
+          `${BASE_URL}/api/users/user/${loggedInUsername}/chats`
         );
 
         if (
@@ -103,12 +104,12 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
       }
 
       const response = await axios.get(
-        `http://localhost:5000/api/users/user/${newChatUsername}`
+        `${BASE_URL}/api/users/user/${newChatUsername}`
       );
 
       if (response.data) {
         await axios.post(
-          `http://localhost:5000/api/users/addChat/${loggedInUsername}`,
+          `${BASE_URL}/api/users/addChat/${loggedInUsername}`,
           { newChatUsername }
         );
 
@@ -168,7 +169,7 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
             <img
               src={
                 profilePic
-                  ? `http://localhost:5000${profilePic}`
+                  ? `${BASE_URL}${profilePic}`
                   : "/path/to/default.jpg"
               }
               alt={loggedInUsername}
@@ -197,7 +198,7 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
             onClick={closeZoomedPic}
           >
             <img
-              src={`http://localhost:5000${profilePic}`}
+              src={`${BASE_URL}${profilePic}`}
               alt="Zoomed Profile"
               className="w-60 h-60 rounded-full object-cover transition-transform transform scale-100 hover:scale-110"
             />
@@ -251,7 +252,7 @@ export default function SideChats({ loggedInUsername, onSelectUser }) {
             onClick={() => handleUsernameClick(user.username)}
           >
             <img
-              src={`http://localhost:5000${user.profilePicture}`}
+              src={`${BASE_URL}${user.profilePicture}`}
               alt={user.username}
               className="w-10 h-10 rounded-full object-cover mr-3"
             />

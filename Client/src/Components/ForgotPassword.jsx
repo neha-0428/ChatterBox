@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/bg.png";
+import { BASE_URL } from "../socket";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -26,14 +27,14 @@ export default function ForgotPassword() {
     try {
       // Check if user exists
       const response = await axios.post(
-        "http://localhost:5000/api/users/forgot-password",
+        `${BASE_URL}/api/users/forgot-password`,
         { email }
       );
 
       if (response.data) {
         // Fetch the security question
         const questionResponse = await axios.get(
-          `http://localhost:5000/api/users/security-question/${email}`
+          `${BASE_URL}/api/users/security-question/${email}`
         );
 
         setSecurityQuestion(questionResponse.data.securityQuestion);
@@ -58,7 +59,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/reset-password",
+        `${BASE_URL}/api/users/reset-password`,
         { email, password: newPassword, securityAnswer }
       );
       toast.success(response.data.message, toastOptions);

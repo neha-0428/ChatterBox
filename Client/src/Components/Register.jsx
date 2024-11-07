@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import axios from "axios";
 import bgImage from "../assets/bg.png";
+import { BASE_URL } from "../socket";
 
 export default function Register() {
   const [values, setValues] = useState({
@@ -37,7 +38,7 @@ export default function Register() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${BASE_URL}/api/users/register`,
         values
       );
       toast.success(response.data.message, toastOptions);
