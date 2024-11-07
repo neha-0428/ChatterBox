@@ -1,3 +1,4 @@
+// index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -21,14 +22,12 @@ const corsOptions = {
   ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true, // Enables cookies or authorization headers
+  credentials: true, // Allows cookies or authorization headers
 };
 
 // Apply CORS middleware for HTTP routes
 app.use(cors(corsOptions));
-
-// Handle preflight requests for all routes
-app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptions)); // Preflight requests
 
 // Middleware
 app.use(express.json());
@@ -43,7 +42,14 @@ connectDB();
 
 // Configure Socket.IO with CORS options
 const io = new SocketIO(server, {
-  cors: corsOptions,
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "https://chatterbox-frontend-ikdb.onrender.com",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
   transports: ["websocket"],
 });
 
