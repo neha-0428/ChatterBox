@@ -13,39 +13,45 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// Configure CORS for Socket.IO
-const io = new SocketIO(server, {
-  cors: {
-    origin: ["https://chatterbox-frontend-ikdb.onrender.com"],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  },
-  transports: ["websocket"],
-});
+// CORS configuration for both HTTP routes and Socket.IO
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://chatterbox-frontend-ikdb.onrender.com",
+  ],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // Enables cookies or authorization headers
+};
 
-console.log("MongoURL " , process.env.MONGO_URL);
+// Apply CORS middleware for HTTP routes
+app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options("*", cors(corsOptions));
+
+// Middleware
+app.use(express.json());
+
+// API Routes
+app.use("/api/users", UserRoutes);
+app.use("/api/chats", chatRoutes);
+app.use("/uploads", express.static("uploads"));
 
 // Connect to MongoDB
 connectDB();
 
-app.use(
-  cors({
-    origin: ["https://chatterbox-frontend-ikdb.onrender.com"],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
-app.use(express.json());
-
-app.use("/api/users", UserRoutes);
-app.use("/api/chats", chatRoutes);
-app.use("/uploads", express.static("uploads"));
+// Configure Socket.IO with CORS options
+const io = new SocketIO(server, {
+  cors: corsOptions,
+  transports: ["websocket"],
+});
 
 // Socket.IO connection handling
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
 
-  // Handle the 'join' event to subscribe users to their own room
+  // Handle the 'join' event
   socket.on("join", (username) => {
     socket.join(username); // User joins their own room
     console.log(`${username} joined room ${username}`);
@@ -57,11 +63,10 @@ io.on("connection", (socket) => {
       const newMessage = new Chat({ sender, receiver, text, timestamp });
       await newMessage.save();
 
-      // Emit to both sender and receiver rooms
+      // Emit message to receiver room
       io.to(receiver).emit("receiveMessage", { sender, text, timestamp });
 
       console.log(`Message sent from ${sender} to ${receiver}`);
-      console.log(`Emitting message to ${receiver} and ${sender}`);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -69,7 +74,6 @@ io.on("connection", (socket) => {
 
   // Handle new user registration
   socket.on("newUser", (userData) => {
-    // Broadcast to everyone except the new user
     socket.broadcast.emit("newUserRegistered", userData);
   });
 
