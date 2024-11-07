@@ -20,7 +20,7 @@ const io = new SocketIO(server, {
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
-  transports: ["websocket"]
+  transports: ["websocket"],
 });
 
 console.log("MongoURL " , process.env.MONGO_URL);
