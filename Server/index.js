@@ -16,11 +16,11 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new SocketIO(server, {
   cors: {
-    origin: "*",
-    // origin: ["http://localhost:5173", process.env.CLIENT_URL],
+    origin: ["http://localhost:5173", process.env.CLIENT_URL],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
+  transports: ["websocket", "polling"],
 });
 
 console.log("MongoURL " , process.env.MONGO_URL);
