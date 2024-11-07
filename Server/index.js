@@ -16,7 +16,8 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new SocketIO(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: "*",
+    // origin: ["http://localhost:5173", process.env.CLIENT_URL],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
@@ -29,7 +30,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: ["http://localhost:5173", process.env.CLIENT_URL],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
