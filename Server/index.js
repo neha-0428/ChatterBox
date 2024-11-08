@@ -14,21 +14,25 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// CORS configuration
-const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://chatterbox-frontend-ikdb.onrender.com",
-  ],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
+// Configure CORS for Socket.IO
+const io = new SocketIO(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  },
+});
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+// Connect to MongoDB
+connectDB();
 
-// Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173", 
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 app.use(express.json());
 
 // API Routes
@@ -39,29 +43,6 @@ app.use("/uploads", express.static("uploads"));
 // Connect to MongoDB
 connectDB();
 
-// Serve React static files in production
-if (process.env.NODE_ENV === "production") {
-  // Correct path to 'Client/dist' folder (assuming you have a dist folder after build)
-  app.use(express.static(path.join(__dirname, "Client", "dist")));
-
-  // Send all other requests to the React app
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "Client", "dist", "index.html"));
-  });
-}
-
-// Socket.IO setup
-const io = new SocketIO(server, {
-  cors: {
-    origin: [
-      "http://localhost:5173",
-      "https://chatterbox-frontend-ikdb.onrender.com",
-    ],
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-  transports: ["websocket"],
-});
 
 // Socket.IO connection handling
 io.on("connection", (socket) => {
