@@ -6,7 +6,7 @@ import UserRoutes from "./Routes/UserRoutes.js";
 import chatRoutes from "./Routes/chatRoutes.js";
 import { Server as SocketIO } from "socket.io";
 import http from "http";
-import path from "path";
+import path from "path"; // Import path module
 import Chat from "./Model/Chat.js";
 
 dotenv.config();
@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// CORS configuration for both HTTP routes and Socket.IO
+// CORS configuration
 const corsOptions = {
   origin: [
     "http://localhost:5173",
@@ -22,12 +22,11 @@ const corsOptions = {
   ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true, // Allows cookies or authorization headers
+  credentials: true,
 };
 
-// Apply CORS middleware for HTTP routes
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Preflight requests
+app.options("*", cors(corsOptions));
 
 // Middleware
 app.use(express.json());
@@ -40,17 +39,18 @@ app.use("/uploads", express.static("uploads"));
 // Connect to MongoDB
 connectDB();
 
-// Serve static files from React build folder
+// Serve React static files in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "frontend", "build")));
+  // Correct path to 'Client/dist' folder (assuming you have a dist folder after build)
+  app.use(express.static(path.join(__dirname, "Client", "dist")));
 
-  // Catch-all route to serve index.html for any route not defined in the API
+  // Send all other requests to the React app
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+    res.sendFile(path.join(__dirname, "Client", "dist", "index.html"));
   });
 }
 
-// Configure Socket.IO with CORS options
+// Socket.IO setup
 const io = new SocketIO(server, {
   cors: {
     origin: [
@@ -67,33 +67,26 @@ const io = new SocketIO(server, {
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
 
-  // Handle the 'join' event
   socket.on("join", (username) => {
-    socket.join(username); // User joins their own room
+    socket.join(username);
     console.log(`${username} joined room ${username}`);
   });
 
-  // Handle the 'sendMessage' event
   socket.on("sendMessage", async ({ sender, receiver, text, timestamp }) => {
     try {
       const newMessage = new Chat({ sender, receiver, text, timestamp });
       await newMessage.save();
-
-      // Emit message to receiver room
       io.to(receiver).emit("receiveMessage", { sender, text, timestamp });
-
       console.log(`Message sent from ${sender} to ${receiver}`);
     } catch (error) {
       console.error("Error sending message:", error);
     }
   });
 
-  // Handle new user registration
   socket.on("newUser", (userData) => {
     socket.broadcast.emit("newUserRegistered", userData);
   });
 
-  // Handle disconnection
   socket.on("disconnect", () => {
     console.log("Client disconnected:", socket.id);
   });
