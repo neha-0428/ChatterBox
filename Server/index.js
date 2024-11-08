@@ -6,7 +6,7 @@ import UserRoutes from "./Routes/UserRoutes.js";
 import chatRoutes from "./Routes/chatRoutes.js";
 import { Server as SocketIO } from "socket.io";
 import http from "http";
-import path from "path"; // Import path module
+import path from "path";
 import Chat from "./Model/Chat.js";
 
 dotenv.config();
@@ -17,7 +17,10 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new SocketIO(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://chatterbox-frontend-7jkd.onrender.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://chatterbox-frontend-7jkd.onrender.com",
+    ],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
@@ -43,9 +46,15 @@ app.use("/api/users", UserRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/uploads", express.static("uploads"));
 
-// Connect to MongoDB
-connectDB();
+// Serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "/Client/dist")));
 
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "Client", "dist", "index.html"))
+  );
+}
 
 // Socket.IO connection handling
 io.on("connection", (socket) => {
