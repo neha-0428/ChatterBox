@@ -3,7 +3,6 @@ import SideChats from "./SideChats";
 import ChatWindow from "./ChatWindow";
 import "../style.css";
 import { FaBars } from "react-icons/fa";
-import { BASE_URL } from "../socket";
 
 export default function Chat() {
   const [selectedUser, setSelectedUser] = useState(null);
