@@ -17,7 +17,7 @@ const server = http.createServer(app);
 // Configure CORS for Socket.IO
 const io = new SocketIO(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://chatterbox-frontend-7jkd.onrender.com"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
@@ -28,7 +28,10 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: [
+      "http://localhost:5173",
+      "https://chatterbox-frontend-7jkd.onrender.com",
+    ],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
